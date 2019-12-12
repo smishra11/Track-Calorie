@@ -46,6 +46,20 @@ const ItemCtrl = (function() {
 
             return newItem;
         },
+        getTotalCalories: function() {
+            let total = 0;
+
+            //Loop through items and cals
+            data.items.forEach(function(item) {
+                total += item.calories;
+            });
+            
+            //Set total calories in data structure
+            data.totalCalories = total;
+
+            //Return total
+            return data.totalCalories;
+        },
         logData: function() {
             return data;
         }
@@ -59,7 +73,8 @@ const UICtrl = (function() {
         itemList: '#item-list',
         addBtn: '.add-btn',
         itemNameInput: '#item-name',
-        itemCaloriesInput: '#item-calories'
+        itemCaloriesInput: '#item-calories',
+        totalCalories: '.total-calories'
     }
     
     //Pubilc Methods
@@ -110,6 +125,9 @@ const UICtrl = (function() {
         hideList: function() {
             document.querySelector(UISelectors.itemList).style.display = 'none';
         },
+        showTotalCalories: function(totalCalories) {
+            document.querySelector(UISelectors.totalCalories).textContent = totalCalories;
+        },
         getSelectors:function() {
             return UISelectors;
         }
@@ -141,6 +159,11 @@ const App = (function(ItemCtrl, UICtrl) {
             //Add item To UI list
             UICtrl.addListItem(newItem);
 
+            //Get total calories
+            const totalCalories = ItemCtrl.getTotalCalories();
+            //Add total calories to UI
+            UICtrl.showTotalCalories(totalCalories);
+
             //Clear fields
             UICtrl.clearInput();
         }
@@ -162,6 +185,11 @@ const App = (function(ItemCtrl, UICtrl) {
                 UICtrl.populateItemList(items);
             }
 
+            //Get total calories
+            const totalCalories = ItemCtrl.getTotalCalories();
+            //Add total calories to UI
+            UICtrl.showTotalCalories(totalCalories);
+
             //Load event listners
             loadEventListners();
         }
@@ -170,4 +198,4 @@ const App = (function(ItemCtrl, UICtrl) {
 })(ItemCtrl, UICtrl);
 
 //Initialize App
-App.init();
+App.init(); 
